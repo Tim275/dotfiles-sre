@@ -1,0 +1,161 @@
+{
+  "Go Main": {
+    "prefix": ["gomain", "main"],
+    "body": [
+      "package main",
+      "",
+      "import \"fmt\"",
+      "",
+      "func main() {",
+      "\t${1:fmt.Println(\"Hello, World!\")}",
+      "}",
+      "$0"
+    ],
+    "description": "Go main package"
+  },
+  "Go Function": {
+    "prefix": ["gofunc", "func"],
+    "body": [
+      "func ${1:name}(${2:params}) ${3:returnType} {",
+      "\t${4:return}",
+      "}",
+      "$0"
+    ],
+    "description": "Go function"
+  },
+  "Go If Error": {
+    "prefix": ["goiferr", "iferr"],
+    "body": [
+      "if err != nil {",
+      "\treturn ${1:err}",
+      "}",
+      "$0"
+    ],
+    "description": "Go if err != nil"
+  },
+  "Go Struct": {
+    "prefix": ["gostruct", "struct"],
+    "body": [
+      "type ${1:Name} struct {",
+      "\t${2:Field} ${3:string} `json:\"${4:field}\"`",
+      "}",
+      "$0"
+    ],
+    "description": "Go struct"
+  },
+  "Go HTTP Handler": {
+    "prefix": ["gohandler", "handler"],
+    "body": [
+      "func ${1:Handler}(w http.ResponseWriter, r *http.Request) {",
+      "\t${2:w.WriteHeader(http.StatusOK)}",
+      "\t${3:json.NewEncoder(w).Encode(map[string]string{\"status\": \"ok\"})}",
+      "}",
+      "$0"
+    ],
+    "description": "Go HTTP handler"
+  },
+  "Go HTTP Server": {
+    "prefix": ["goserver", "server"],
+    "body": [
+      "package main",
+      "",
+      "import (",
+      "\t\"log\"",
+      "\t\"net/http\"",
+      ")",
+      "",
+      "func main() {",
+      "\thttp.HandleFunc(\"/\", func(w http.ResponseWriter, r *http.Request) {",
+      "\t\tw.Write([]byte(\"Hello, World!\"))",
+      "\t})",
+      "",
+      "\tlog.Println(\"Server starting on :${1:8080}\")",
+      "\tlog.Fatal(http.ListenAndServe(\":${1:8080}\", nil))",
+      "}",
+      "$0"
+    ],
+    "description": "Go HTTP server"
+  },
+  "Go Test": {
+    "prefix": ["gotest", "test"],
+    "body": [
+      "func Test${1:Name}(t *testing.T) {",
+      "\t// Arrange",
+      "\t${2:expected := \"value\"}",
+      "",
+      "\t// Act",
+      "\t${3:result := \"value\"}",
+      "",
+      "\t// Assert",
+      "\tif result != expected {",
+      "\t\tt.Errorf(\"got %v, want %v\", result, expected)",
+      "\t}",
+      "}",
+      "$0"
+    ],
+    "description": "Go test function"
+  },
+  "Go Table Test": {
+    "prefix": ["gotabletest", "tabletest"],
+    "body": [
+      "func Test${1:Name}(t *testing.T) {",
+      "\ttests := []struct {",
+      "\t\tname     string",
+      "\t\tinput    ${2:string}",
+      "\t\texpected ${3:string}",
+      "\t}{",
+      "\t\t{\"${4:test case}\", ${5:\"input\"}, ${6:\"expected\"}},",
+      "\t}",
+      "",
+      "\tfor _, tt := range tests {",
+      "\t\tt.Run(tt.name, func(t *testing.T) {",
+      "\t\t\tresult := ${7:FunctionToTest}(tt.input)",
+      "\t\t\tif result != tt.expected {",
+      "\t\t\t\tt.Errorf(\"got %v, want %v\", result, tt.expected)",
+      "\t\t\t}",
+      "\t\t})",
+      "\t}",
+      "}",
+      "$0"
+    ],
+    "description": "Go table-driven test"
+  },
+  "Go Goroutine": {
+    "prefix": ["gogo", "goroutine"],
+    "body": [
+      "go func() {",
+      "\t${1:// code}",
+      "}()",
+      "$0"
+    ],
+    "description": "Go goroutine"
+  },
+  "Go Context": {
+    "prefix": ["goctx", "context"],
+    "body": [
+      "ctx, cancel := context.WithTimeout(context.Background(), ${1:5}*time.Second)",
+      "defer cancel()",
+      "$0"
+    ],
+    "description": "Go context with timeout"
+  },
+  "Go Kubernetes Client": {
+    "prefix": ["gok8s", "kubernetes"],
+    "body": [
+      "import (",
+      "\t\"k8s.io/client-go/kubernetes\"",
+      "\t\"k8s.io/client-go/tools/clientcmd\"",
+      ")",
+      "",
+      "func getClient() (*kubernetes.Clientset, error) {",
+      "\tconfig, err := clientcmd.BuildConfigFromFlags(\"\", clientcmd.RecommendedHomeFile)",
+      "\tif err != nil {",
+      "\t\treturn nil, err",
+      "\t}",
+      "\treturn kubernetes.NewForConfig(config)",
+      "}",
+      "$0"
+    ],
+    "description": "Go Kubernetes client"
+  }
+}

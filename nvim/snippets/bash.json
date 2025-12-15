@@ -1,0 +1,117 @@
+{
+  "Bash Script Header": {
+    "prefix": ["bash", "shebang"],
+    "body": [
+      "#!/bin/bash",
+      "set -euo pipefail",
+      "",
+      "# ${1:Description}",
+      "",
+      "${0}"
+    ],
+    "description": "Bash script header"
+  },
+  "Bash Function": {
+    "prefix": ["bashfunc", "function"],
+    "body": [
+      "${1:function_name}() {",
+      "    ${2:# code}",
+      "}",
+      "$0"
+    ],
+    "description": "Bash function"
+  },
+  "Bash If": {
+    "prefix": ["bashif", "if"],
+    "body": [
+      "if [[ ${1:condition} ]]; then",
+      "    ${2:# code}",
+      "fi",
+      "$0"
+    ],
+    "description": "Bash if statement"
+  },
+  "Bash For Loop": {
+    "prefix": ["bashfor", "for"],
+    "body": [
+      "for ${1:item} in ${2:items}; do",
+      "    ${3:echo \"\\$${1}\"}",
+      "done",
+      "$0"
+    ],
+    "description": "Bash for loop"
+  },
+  "Bash While Loop": {
+    "prefix": ["bashwhile", "while"],
+    "body": [
+      "while ${1:true}; do",
+      "    ${2:# code}",
+      "done",
+      "$0"
+    ],
+    "description": "Bash while loop"
+  },
+  "Bash Case": {
+    "prefix": ["bashcase", "case"],
+    "body": [
+      "case ${1:\\$1} in",
+      "    ${2:pattern})",
+      "        ${3:# code}",
+      "        ;;",
+      "    *)",
+      "        echo \"Unknown option\"",
+      "        ;;",
+      "esac",
+      "$0"
+    ],
+    "description": "Bash case statement"
+  },
+  "Bash Check Command": {
+    "prefix": ["bashcmd", "command"],
+    "body": [
+      "if ! command -v ${1:kubectl} &> /dev/null; then",
+      "    echo \"${1:kubectl} not found\"",
+      "    exit 1",
+      "fi",
+      "$0"
+    ],
+    "description": "Check if command exists"
+  },
+  "Bash Logging": {
+    "prefix": ["bashlog", "log"],
+    "body": [
+      "log() {",
+      "    echo \"[\\$(date '+%Y-%m-%d %H:%M:%S')] \\$*\"",
+      "}",
+      "",
+      "log_error() {",
+      "    echo \"[\\$(date '+%Y-%m-%d %H:%M:%S')] ERROR: \\$*\" >&2",
+      "}",
+      "$0"
+    ],
+    "description": "Bash logging functions"
+  },
+  "Bash Args Parser": {
+    "prefix": ["bashargs", "args"],
+    "body": [
+      "while [[ \\$# -gt 0 ]]; do",
+      "    case \\$1 in",
+      "        -h|--help)",
+      "            echo \"Usage: \\$0 [options]\"",
+      "            exit 0",
+      "            ;;",
+      "        -${1:f}|--${2:flag})",
+      "            ${3:FLAG}=\"\\$2\"",
+      "            shift 2",
+      "            ;;",
+      "        *)",
+      "            echo \"Unknown option: \\$1\"",
+      "            exit 1",
+      "            ;;",
+      "    esac",
+      "done",
+      "$0"
+    ],
+    "description": "Bash argument parser"
+  }
+}

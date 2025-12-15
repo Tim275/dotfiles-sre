@@ -1,0 +1,213 @@
+{
+  "Kubernetes Deployment": {
+    "prefix": ["kdep", "k8s-deployment"],
+    "body": [
+      "apiVersion: apps/v1",
+      "kind: Deployment",
+      "metadata:",
+      "  name: ${1:app-name}",
+      "  namespace: ${2:default}",
+      "  labels:",
+      "    app: ${1:app-name}",
+      "spec:",
+      "  replicas: ${3:1}",
+      "  selector:",
+      "    matchLabels:",
+      "      app: ${1:app-name}",
+      "  template:",
+      "    metadata:",
+      "      labels:",
+      "        app: ${1:app-name}",
+      "    spec:",
+      "      containers:",
+      "        - name: ${1:app-name}",
+      "          image: ${4:nginx:latest}",
+      "          ports:",
+      "            - containerPort: ${5:80}",
+      "          resources:",
+      "            requests:",
+      "              memory: \"${6:64Mi}\"",
+      "              cpu: \"${7:100m}\"",
+      "            limits:",
+      "              memory: \"${8:128Mi}\"",
+      "              cpu: \"${9:200m}\"",
+      "$0"
+    ],
+    "description": "Kubernetes Deployment"
+  },
+  "Kubernetes Service": {
+    "prefix": ["ksvc", "k8s-service"],
+    "body": [
+      "apiVersion: v1",
+      "kind: Service",
+      "metadata:",
+      "  name: ${1:app-name}",
+      "  namespace: ${2:default}",
+      "spec:",
+      "  selector:",
+      "    app: ${1:app-name}",
+      "  ports:",
+      "    - protocol: TCP",
+      "      port: ${3:80}",
+      "      targetPort: ${4:80}",
+      "  type: ${5|ClusterIP,NodePort,LoadBalancer|}",
+      "$0"
+    ],
+    "description": "Kubernetes Service"
+  },
+  "Kubernetes ConfigMap": {
+    "prefix": ["kcm", "k8s-configmap"],
+    "body": [
+      "apiVersion: v1",
+      "kind: ConfigMap",
+      "metadata:",
+      "  name: ${1:config-name}",
+      "  namespace: ${2:default}",
+      "data:",
+      "  ${3:KEY}: ${4:value}",
+      "$0"
+    ],
+    "description": "Kubernetes ConfigMap"
+  },
+  "Kubernetes Secret": {
+    "prefix": ["ksec", "k8s-secret"],
+    "body": [
+      "apiVersion: v1",
+      "kind: Secret",
+      "metadata:",
+      "  name: ${1:secret-name}",
+      "  namespace: ${2:default}",
+      "type: Opaque",
+      "stringData:",
+      "  ${3:KEY}: ${4:value}",
+      "$0"
+    ],
+    "description": "Kubernetes Secret"
+  },
+  "Kubernetes Ingress": {
+    "prefix": ["king", "k8s-ingress"],
+    "body": [
+      "apiVersion: networking.k8s.io/v1",
+      "kind: Ingress",
+      "metadata:",
+      "  name: ${1:app-name}",
+      "  namespace: ${2:default}",
+      "  annotations:",
+      "    nginx.ingress.kubernetes.io/rewrite-target: /",
+      "spec:",
+      "  ingressClassName: ${3:nginx}",
+      "  rules:",
+      "    - host: ${4:app.example.com}",
+      "      http:",
+      "        paths:",
+      "          - path: /",
+      "            pathType: Prefix",
+      "            backend:",
+      "              service:",
+      "                name: ${1:app-name}",
+      "                port:",
+      "                  number: ${5:80}",
+      "$0"
+    ],
+    "description": "Kubernetes Ingress"
+  },
+  "Kubernetes PVC": {
+    "prefix": ["kpvc", "k8s-pvc"],
+    "body": [
+      "apiVersion: v1",
+      "kind: PersistentVolumeClaim",
+      "metadata:",
+      "  name: ${1:pvc-name}",
+      "  namespace: ${2:default}",
+      "spec:",
+      "  accessModes:",
+      "    - ${3|ReadWriteOnce,ReadOnlyMany,ReadWriteMany|}",
+      "  storageClassName: ${4:standard}",
+      "  resources:",
+      "    requests:",
+      "      storage: ${5:1Gi}",
+      "$0"
+    ],
+    "description": "Kubernetes PersistentVolumeClaim"
+  },
+  "Kubernetes Namespace": {
+    "prefix": ["kns", "k8s-namespace"],
+    "body": [
+      "apiVersion: v1",
+      "kind: Namespace",
+      "metadata:",
+      "  name: ${1:namespace-name}",
+      "  labels:",
+      "    name: ${1:namespace-name}",
+      "$0"
+    ],
+    "description": "Kubernetes Namespace"
+  },
+  "Docker Compose Service": {
+    "prefix": ["dcsvc", "compose-service"],
+    "body": [
+      "${1:service-name}:",
+      "  image: ${2:nginx:latest}",
+      "  container_name: ${1:service-name}",
+      "  restart: unless-stopped",
+      "  ports:",
+      "    - \"${3:8080}:${4:80}\"",
+      "  environment:",
+      "    - ${5:KEY}=${6:value}",
+      "  volumes:",
+      "    - ${7:./data}:${8:/app/data}",
+      "  networks:",
+      "    - ${9:default}",
+      "$0"
+    ],
+    "description": "Docker Compose Service"
+  },
+  "GitHub Actions Workflow": {
+    "prefix": ["ghaw", "github-workflow"],
+    "body": [
+      "name: ${1:CI}",
+      "",
+      "on:",
+      "  push:",
+      "    branches: [ ${2:main} ]",
+      "  pull_request:",
+      "    branches: [ ${2:main} ]",
+      "",
+      "jobs:",
+      "  ${3:build}:",
+      "    runs-on: ${4:ubuntu-latest}",
+      "    steps:",
+      "      - uses: actions/checkout@v4",
+      "      - name: ${5:Build}",
+      "        run: |",
+      "          ${6:echo \"Hello World\"}",
+      "$0"
+    ],
+    "description": "GitHub Actions Workflow"
+  },
+  "Helm Values": {
+    "prefix": ["helmval", "helm-values"],
+    "body": [
+      "replicaCount: ${1:1}",
+      "",
+      "image:",
+      "  repository: ${2:nginx}",
+      "  tag: ${3:latest}",
+      "  pullPolicy: ${4|IfNotPresent,Always,Never|}",
+      "",
+      "service:",
+      "  type: ${5|ClusterIP,NodePort,LoadBalancer|}",
+      "  port: ${6:80}",
+      "",
+      "resources:",
+      "  requests:",
+      "    memory: ${7:64Mi}",
+      "    cpu: ${8:100m}",
+      "  limits:",
+      "    memory: ${9:128Mi}",
+      "    cpu: ${10:200m}",
+      "$0"
+    ],
+    "description": "Helm Values file"
+  }
+}

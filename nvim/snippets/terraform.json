@@ -1,0 +1,86 @@
+{
+  "Terraform Provider AWS": {
+    "prefix": ["tfaws", "provider-aws"],
+    "body": [
+      "terraform {",
+      "  required_providers {",
+      "    aws = {",
+      "      source  = \"hashicorp/aws\"",
+      "      version = \"~> ${1:5.0}\"",
+      "    }",
+      "  }",
+      "}",
+      "",
+      "provider \"aws\" {",
+      "  region = \"${2:eu-central-1}\"",
+      "}",
+      "$0"
+    ],
+    "description": "Terraform AWS Provider"
+  },
+  "Terraform Variable": {
+    "prefix": ["tfvar", "variable"],
+    "body": [
+      "variable \"${1:name}\" {",
+      "  description = \"${2:Description}\"",
+      "  type        = ${3|string,number,bool,list(string),map(string)|}",
+      "  default     = ${4:\"value\"}",
+      "}",
+      "$0"
+    ],
+    "description": "Terraform variable"
+  },
+  "Terraform Output": {
+    "prefix": ["tfout", "output"],
+    "body": [
+      "output \"${1:name}\" {",
+      "  description = \"${2:Description}\"",
+      "  value       = ${3:resource.name.attribute}",
+      "}",
+      "$0"
+    ],
+    "description": "Terraform output"
+  },
+  "Terraform Resource": {
+    "prefix": ["tfres", "resource"],
+    "body": [
+      "resource \"${1:aws_instance}\" \"${2:name}\" {",
+      "  ${3:ami}           = \"${4:ami-12345}\"",
+      "  ${5:instance_type} = \"${6:t3.micro}\"",
+      "",
+      "  tags = {",
+      "    Name = \"${2:name}\"",
+      "  }",
+      "}",
+      "$0"
+    ],
+    "description": "Terraform resource"
+  },
+  "Terraform Module": {
+    "prefix": ["tfmod", "module"],
+    "body": [
+      "module \"${1:name}\" {",
+      "  source = \"${2:./modules/name}\"",
+      "",
+      "  ${3:variable} = ${4:value}",
+      "}",
+      "$0"
+    ],
+    "description": "Terraform module"
+  },
+  "Terraform Data": {
+    "prefix": ["tfdata", "data"],
+    "body": [
+      "data \"${1:aws_ami}\" \"${2:name}\" {",
+      "  most_recent = true",
+      "",
+      "  filter {",
+      "    name   = \"${3:name}\"",
+      "    values = [\"${4:value}\"]",
+      "  }",
+      "}",
+      "$0"
+    ],
+    "description": "Terraform data source"
+  }
+}

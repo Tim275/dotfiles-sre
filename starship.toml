@@ -1,0 +1,218 @@
+# =============================================================================
+# STARSHIP PROMPT - DevOps/SRE Configuration
+# =============================================================================
+# Features:
+#   - Kubernetes Context & Namespace (CRITICAL for SRE!)
+#   - Python Virtualenv
+#   - Terraform Workspace
+#   - Git Status
+#   - Docker Context
+#   - AWS Profile
+#   - Command Duration
+# =============================================================================
+
+format = """
+[](#9A348E)\
+$os\
+$username\
+[](bg:#DA627D fg:#9A348E)\
+$directory\
+[](fg:#DA627D bg:#FCA17D)\
+$git_branch\
+$git_status\
+[](fg:#FCA17D bg:#86BBD8)\
+$python\
+$golang\
+$rust\
+$nodejs\
+$terraform\
+[](fg:#86BBD8 bg:#06969A)\
+$docker_context\
+$kubernetes\
+[](fg:#06969A bg:#33658A)\
+$aws\
+$cmd_duration\
+$time\
+[ ](fg:#33658A)\
+$line_break\
+$character\
+"""
+
+# Zweizeilig für mehr Platz
+add_newline = true
+
+# =============================================================================
+# USER & OS
+# =============================================================================
+[username]
+show_always = true
+style_user = "bg:#9A348E fg:#FFFFFF"
+style_root = "bg:#FF0000 fg:#FFFFFF"
+format = '[$user ]($style)'
+disabled = false
+
+[os]
+style = "bg:#9A348E"
+disabled = true
+
+# =============================================================================
+# DIRECTORY
+# =============================================================================
+[directory]
+style = "bg:#DA627D fg:#FFFFFF"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+read_only = " 󰌾"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Desktop" = " "
+"Projects" = " "
+"code" = " "
+
+# =============================================================================
+# GIT
+# =============================================================================
+[git_branch]
+symbol = " "
+style = "bg:#FCA17D fg:#000000"
+format = '[ $symbol$branch ]($style)'
+
+[git_status]
+style = "bg:#FCA17D fg:#000000"
+format = '[$all_status$ahead_behind ]($style)'
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+conflicted = "=${count}"
+deleted = "✘${count}"
+modified = "!${count}"
+renamed = "»${count}"
+staged = "+${count}"
+stashed = "*${count}"
+untracked = "?${count}"
+
+# =============================================================================
+# LANGUAGES (DevOps Stack)
+# =============================================================================
+[python]
+symbol = " "
+style = "bg:#86BBD8 fg:#000000"
+format = '[ $symbol$virtualenv ]($style)'
+detect_extensions = ["py"]
+detect_files = ["requirements.txt", "pyproject.toml", "Pipfile", ".python-version"]
+
+[golang]
+symbol = " "
+style = "bg:#86BBD8 fg:#000000"
+format = '[ $symbol($version) ]($style)'
+detect_extensions = ["go"]
+detect_files = ["go.mod", "go.sum"]
+
+[rust]
+symbol = " "
+style = "bg:#86BBD8 fg:#000000"
+format = '[ $symbol($version) ]($style)'
+
+[nodejs]
+symbol = " "
+style = "bg:#86BBD8 fg:#000000"
+format = '[ $symbol($version) ]($style)'
+detect_extensions = ["js", "ts"]
+detect_files = ["package.json"]
+
+# =============================================================================
+# INFRASTRUCTURE (SRE Critical!)
+# =============================================================================
+[terraform]
+symbol = "󱁢 "
+style = "bg:#86BBD8 fg:#000000"
+format = '[ $symbol$workspace ]($style)'
+detect_extensions = ["tf", "tfvars"]
+detect_files = [".terraform"]
+
+[kubernetes]
+symbol = "󱃾 "
+style = "bg:#06969A fg:#FFFFFF"
+format = '[ $symbol$context(:$namespace) ]($style)'
+disabled = false
+# Immer anzeigen in diesen Ordnern
+detect_folders = ["charts", "k8s", "kubernetes", "manifests", "deploy", "helm"]
+detect_files = ["Dockerfile", "docker-compose.yml", "Chart.yaml"]
+detect_env_vars = ["KUBECONFIG"]
+
+[kubernetes.context_aliases]
+# Kürze lange Context-Namen
+"arn:aws:eks:.*:.*:cluster/(?P<cluster>.*)" = "eks:$cluster"
+"gke_.*_(?P<cluster>[\\w-]+)" = "gke:$cluster"
+
+[docker_context]
+symbol = " "
+style = "bg:#06969A fg:#FFFFFF"
+format = '[ $symbol$context ]($style)'
+only_with_files = true
+detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
+
+[aws]
+symbol = " "
+style = "bg:#33658A fg:#FFFFFF"
+format = '[ $symbol($profile)(\($region\)) ]($style)'
+disabled = false
+force_display = false
+
+[aws.region_aliases]
+eu-central-1 = "eu"
+us-east-1 = "us"
+us-west-2 = "usw"
+
+# =============================================================================
+# STATUS & TIME
+# =============================================================================
+[cmd_duration]
+min_time = 2_000
+style = "bg:#33658A fg:#FFFFFF"
+format = '[ 󰔛 $duration ]($style)'
+show_milliseconds = false
+
+[time]
+disabled = false
+time_format = "%H:%M"
+style = "bg:#33658A fg:#FFFFFF"
+format = '[ $time ]($style)'
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold green)"
+
+# =============================================================================
+# DISABLED (nicht benötigt für DevOps)
+# =============================================================================
+[c]
+disabled = true
+
+[elixir]
+disabled = true
+
+[elm]
+disabled = true
+
+[haskell]
+disabled = true
+
+[java]
+disabled = true
+
+[julia]
+disabled = true
+
+[nim]
+disabled = true
+
+[scala]
+disabled = true
+
+[gradle]
+disabled = true

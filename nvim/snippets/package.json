@@ -1,0 +1,17 @@
+{
+  "name": "devops-snippets",
+  "engines": {
+    "vscode": "^1.11.0"
+  },
+  "contributes": {
+    "snippets": [
+      { "language": "yaml", "path": "./yaml.json" },
+      { "language": "python", "path": "./python.json" },
+      { "language": "go", "path": "./go.json" },
+      { "language": "sh", "path": "./bash.json" },
+      { "language": "bash", "path": "./bash.json" },
+      { "language": "dockerfile", "path": "./dockerfile.json" },
+      { "language": "terraform", "path": "./terraform.json" }
+    ]
+  }
+}

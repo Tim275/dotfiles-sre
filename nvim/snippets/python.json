@@ -1,0 +1,157 @@
+{
+  "Python Main": {
+    "prefix": ["pymain", "main"],
+    "body": [
+      "def main():",
+      "    ${1:pass}",
+      "",
+      "",
+      "if __name__ == \"__main__\":",
+      "    main()",
+      "$0"
+    ],
+    "description": "Python main function"
+  },
+  "Python Argparse": {
+    "prefix": ["pyargs", "argparse"],
+    "body": [
+      "import argparse",
+      "",
+      "def parse_args():",
+      "    parser = argparse.ArgumentParser(description=\"${1:Description}\")",
+      "    parser.add_argument(\"${2:--flag}\", type=${3:str}, default=\"${4:default}\", help=\"${5:Help text}\")",
+      "    return parser.parse_args()",
+      "",
+      "",
+      "def main():",
+      "    args = parse_args()",
+      "    ${6:pass}",
+      "",
+      "",
+      "if __name__ == \"__main__\":",
+      "    main()",
+      "$0"
+    ],
+    "description": "Python CLI with argparse"
+  },
+  "Python Logger": {
+    "prefix": ["pylog", "logger"],
+    "body": [
+      "import logging",
+      "",
+      "logging.basicConfig(",
+      "    level=logging.${1|INFO,DEBUG,WARNING,ERROR|},",
+      "    format=\"%(asctime)s - %(name)s - %(levelname)s - %(message)s\"",
+      ")",
+      "logger = logging.getLogger(__name__)",
+      "$0"
+    ],
+    "description": "Python logging setup"
+  },
+  "Python Try Except": {
+    "prefix": ["pytry", "try"],
+    "body": [
+      "try:",
+      "    ${1:pass}",
+      "except ${2:Exception} as e:",
+      "    logger.error(f\"Error: {e}\")",
+      "    ${3:raise}",
+      "$0"
+    ],
+    "description": "Python try-except block"
+  },
+  "Python Requests": {
+    "prefix": ["pyreq", "requests"],
+    "body": [
+      "import requests",
+      "",
+      "response = requests.${1|get,post,put,delete|}(",
+      "    url=\"${2:https://api.example.com}\",",
+      "    headers={\"Content-Type\": \"application/json\"},",
+      "    ${3:json={}}",
+      ")",
+      "response.raise_for_status()",
+      "data = response.json()",
+      "$0"
+    ],
+    "description": "Python HTTP request"
+  },
+  "Python Kubernetes Client": {
+    "prefix": ["pyk8s", "kubernetes"],
+    "body": [
+      "from kubernetes import client, config",
+      "",
+      "# Load kubeconfig",
+      "config.load_kube_config()  # or config.load_incluster_config()",
+      "",
+      "# Create API client",
+      "v1 = client.CoreV1Api()",
+      "",
+      "# ${1:List pods}",
+      "pods = v1.list_namespaced_pod(namespace=\"${2:default}\")",
+      "for pod in pods.items:",
+      "    print(f\"{pod.metadata.name}: {pod.status.phase}\")",
+      "$0"
+    ],
+    "description": "Python Kubernetes client"
+  },
+  "Python Boto3 S3": {
+    "prefix": ["pyboto", "boto3"],
+    "body": [
+      "import boto3",
+      "",
+      "s3 = boto3.client(\"s3\")",
+      "",
+      "# ${1:List buckets}",
+      "response = s3.list_buckets()",
+      "for bucket in response[\"Buckets\"]:",
+      "    print(bucket[\"Name\"])",
+      "$0"
+    ],
+    "description": "Python AWS Boto3"
+  },
+  "Python FastAPI": {
+    "prefix": ["pyfastapi", "fastapi"],
+    "body": [
+      "from fastapi import FastAPI, HTTPException",
+      "from pydantic import BaseModel",
+      "",
+      "app = FastAPI(title=\"${1:API}\")",
+      "",
+      "",
+      "class ${2:Item}(BaseModel):",
+      "    ${3:name}: str",
+      "",
+      "",
+      "@app.get(\"/\")",
+      "async def root():",
+      "    return {\"message\": \"Hello World\"}",
+      "",
+      "",
+      "@app.get(\"/${4:items}/{item_id}\")",
+      "async def get_item(item_id: int):",
+      "    return {\"item_id\": item_id}",
+      "$0"
+    ],
+    "description": "Python FastAPI app"
+  },
+  "Python Pytest": {
+    "prefix": ["pytest", "test"],
+    "body": [
+      "import pytest",
+      "",
+      "",
+      "def test_${1:function}():",
+      "    # Arrange",
+      "    ${2:expected = True}",
+      "",
+      "    # Act",
+      "    ${3:result = True}",
+      "",
+      "    # Assert",
+      "    assert result == expected",
+      "$0"
+    ],
+    "description": "Python pytest test"
+  }
+}
